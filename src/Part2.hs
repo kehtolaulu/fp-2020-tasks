@@ -8,7 +8,9 @@ import Part2.Types
 -- Написать функцию, которая преобразует значение типа
 -- ColorLetter в символ, равный первой букве значения
 prob6 :: ColorLetter -> Char
-prob6 = error "Implement me!"
+prob6 RED = 'R'
+prob6 GREEN = 'G'
+prob6 BLUE = 'B'
 
 ------------------------------------------------------------
 -- PROBLEM #7
@@ -32,7 +34,9 @@ prob8 = error "Implement me!"
 -- Написать функцию, которая возвращает значение из
 -- ColorPart
 prob9 :: ColorPart -> Int
-prob9 = error "Implement me!"
+prob9 (Red x) = x
+prob9 (Green x) = x
+prob9 (Blue x) = x
 
 ------------------------------------------------------------
 -- PROBLEM #10
