@@ -18,15 +18,21 @@ prob6 BLUE = 'B'
 -- Написать функцию, которая проверяет, что значения
 -- находятся в диапазоне от 0 до 255 (границы входят)
 prob7 :: ColorPart -> Bool
-prob7 = error "Implement me!"
+prob7 x = 0 <= colorPartToInt x && colorPartToInt x <= 255
+
+colorPartToInt :: ColorPart -> Int
+colorPartToInt (Red x) = x
+colorPartToInt (Green x) = x
+colorPartToInt (Blue x) = x
 
 ------------------------------------------------------------
 -- PROBLEM #8
---
 -- Написать функцию, которая добавляет в соответствующее
 -- поле значения Color значение из ColorPart
 prob8 :: Color -> ColorPart -> Color
-prob8 = error "Implement me!"
+prob8 (Color r g b) (Red dr)   = Color (r + dr) g b
+prob8 (Color r g b) (Green dg) = Color r (g + dg) b
+prob8 (Color r g b) (Blue db)  = Color r g (b + db)
 
 ------------------------------------------------------------
 -- PROBLEM #9
@@ -34,9 +40,7 @@ prob8 = error "Implement me!"
 -- Написать функцию, которая возвращает значение из
 -- ColorPart
 prob9 :: ColorPart -> Int
-prob9 (Red x) = x
-prob9 (Green x) = x
-prob9 (Blue x) = x
+prob9 = colorPartToInt
 
 ------------------------------------------------------------
 -- PROBLEM #10
@@ -44,14 +48,27 @@ prob9 (Blue x) = x
 -- Написать функцию, которая возвращает компонент Color, у
 -- которого наибольшее значение (если такой единственный)
 prob10 :: Color -> Maybe ColorPart
-prob10 = error "Implement me!"
+prob10 color = if length maximums == 1 then Just maxValue else Nothing
+  where
+    colors = decompose color
+    maxValue = maxBy colorPartToInt colors
+    maximums = filter (== colorPartToInt maxValue) (map colorPartToInt colors)
+
+maxBy :: Ord a => (t -> a) -> [t] -> t
+maxBy f (x:xs) = iter x xs
+  where
+    iter acc [] = acc
+    iter acc (x:xs) = if f acc < f x then iter x xs else iter acc xs
+
+decompose :: Color -> [ColorPart]
+decompose (Color r g b) = [Red r, Green b, Blue b]
 
 ------------------------------------------------------------
 -- PROBLEM #11
 --
 -- Найти сумму элементов дерева
 prob11 :: Num a => Tree a -> a
-prob11 = error "Implement me!"
+prob11 = sum
 
 ------------------------------------------------------------
 -- PROBLEM #12
@@ -62,7 +79,22 @@ prob11 = error "Implement me!"
 -- а все элементы правого поддерева -- не меньше элемента
 -- в узле)
 prob12 :: Ord a => Tree a -> Bool
-prob12 = error "Implement me!"
+prob12 (Tree leftTree value rightTree)
+    = allCorrect [
+        fmap (all (< value)) leftTree
+      , fmap (all (> value)) rightTree
+      , fmap prob12 leftTree
+      , fmap prob12 rightTree
+      ]
+  where
+    allCorrect (Nothing:xs) = allCorrect xs
+    allCorrect ((Just b):xs) = b && allCorrect xs
+
+instance Foldable Tree where
+  foldMap f (Tree (Just leftTree) value (Just rightTree)) = foldMap f leftTree `mappend` f value `mappend` foldMap f rightTree
+  foldMap f (Tree (Just leftTree) value Nothing) = foldMap f leftTree `mappend` f value
+  foldMap f (Tree Nothing value (Just rightTree)) = f value `mappend` foldMap f rightTree
+  foldMap f (Tree Nothing value Nothing) = f value
 
 ------------------------------------------------------------
 -- PROBLEM #13

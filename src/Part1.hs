@@ -69,13 +69,15 @@ prob3 step n = prob3 step (step n) + 1
 --
 -- Число n по модулю не превосходит 10^5
 prob4 :: Integer -> Integer
-prob4 (-1) = 0
-prob4 0 = 1
-prob4 1 = 1
-prob4 n
-  | n < 0 = prob4 (-n - 2) * (if even n then 1 else -1)
-  | otherwise = prob4 (n - 2) + prob4 (n - 1)
+prob4 n = fib (n + 1)
 
+fib :: Integer -> Integer
+fib n
+  | n >= 0 = iter 0 1 n
+  | otherwise = (-1)^(1-n) * fib (-n)
+  where
+    iter a b 0 = a
+    iter a b counter = iter b (a + b) (counter - 1)
 
 ------------------------------------------------------------
 -- PROBLEM #5
@@ -86,9 +88,8 @@ prob4 n
 -- Числа n и k положительны и не превосходят 10^8.
 -- Число 1 не считается простым числом
 prob5 :: Integer -> Integer -> Bool
-prob5 n k = none (\x -> prime x && x `divisor` n) [k..n]
+prob5 n k = all (< k) (primeDivisors n)
   where
-    none p = not . any p
-    prime 2 = True
-    prime x = none (`divisor` x) [2..(ceiling $ sqrt $ fromIntegral x)]
-    x `divisor` y = y `mod` x == 0
+    factors n = [x | x <- [1..n], mod n x == 0]
+    primeDivisors x = filter prime (factors x)
+    prime x = factors x == [1, x]
