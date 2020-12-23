@@ -111,7 +111,15 @@ prob13 = error "Implement me!"
 -- Заменить () на числа в порядке обхода "правый, левый,
 -- корень", начиная с 1
 prob14 :: Tree () -> Tree Int
-prob14 = error "Implement me!"
+prob14 tree = result
+  where
+    (_, Just result) = helper 1 (Just tree)
+    helper no Nothing = (no, Nothing)
+    helper no (Just (Tree l () r)) = (li + 1, Just (Tree l' li r'))
+      where
+        (ri, r') = helper no r
+        (li, l') = helper ri l
+
 
 ------------------------------------------------------------
 -- PROBLEM #15
@@ -119,7 +127,7 @@ prob14 = error "Implement me!"
 -- Выполнить вращение дерева влево относительно корня
 -- (https://en.wikipedia.org/wiki/Tree_rotation)
 prob15 :: Tree a -> Tree a
-prob15 = error "Implement me!"
+prob15 (Tree a b (Just (Tree c d e))) = Tree (Just $ Tree a b c) d e
 
 ------------------------------------------------------------
 -- PROBLEM #16
@@ -127,7 +135,7 @@ prob15 = error "Implement me!"
 -- Выполнить вращение дерева вправо относительно корня
 -- (https://en.wikipedia.org/wiki/Tree_rotation)
 prob16 :: Tree a -> Tree a
-prob16 = error "Implement me!"
+prob16 (Tree (Just (Tree a b c)) d e) = Tree a b (Just $ Tree c d e)
 
 ------------------------------------------------------------
 -- PROBLEM #17
