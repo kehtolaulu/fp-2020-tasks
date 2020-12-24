@@ -1,7 +1,6 @@
 module Part2 where
 
 import Part2.Types
-
 ------------------------------------------------------------
 -- PROBLEM #6
 --
@@ -61,7 +60,7 @@ maxBy f (x:xs) = iter x xs
     iter acc (x:xs) = if f acc < f x then iter x xs else iter acc xs
 
 decompose :: Color -> [ColorPart]
-decompose (Color r g b) = [Red r, Green b, Blue b]
+decompose (Color r g b) = [Red r, Green g, Blue b]
 
 ------------------------------------------------------------
 -- PROBLEM #11

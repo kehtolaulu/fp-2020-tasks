@@ -1,11 +1,16 @@
 module Part3 where
 
+import Data.List (group, nub, sort, find)
+
 ------------------------------------------------------------
 -- PROBLEM #18
 --
 -- Проверить, является ли число N простым (1 <= N <= 10^9)
 prob18 :: Integer -> Bool
-prob18 = error "Implement me!"
+prob18 = isPrime
+
+isPrime :: Integer -> Bool
+isPrime n = n > 1 && null [x | x <- [2..n - 1], n `mod` x == 0]
 
 ------------------------------------------------------------
 -- PROBLEM #19
@@ -23,7 +28,8 @@ prob19 = error "Implement me!"
 -- Совершенное число равно сумме своих делителей (меньших
 -- самого числа)
 prob20 :: Integer -> Bool
-prob20 = error "Implement me!"
+prob20 1 = False
+prob20 n = n == sum (divisors n)
 
 ------------------------------------------------------------
 -- PROBLEM #21
@@ -31,7 +37,14 @@ prob20 = error "Implement me!"
 -- Вернуть список всех делителей числа N (1<=N<=10^10) в
 -- порядке возрастания
 prob21 :: Integer -> [Integer]
-prob21 = error "Implement me!"
+prob21 1 = [1]
+prob21 n = (sort . divisors) n ++ [n]
+
+divisors :: Integer  -> [Integer ]
+divisors 1 = [1]
+divisors n = (1:) $ nub $ concat [ [x, n `div` x] | x <- [2..limit], n `rem` x == 0 ]
+  where
+    limit = (floor.sqrt.fromIntegral) n
 
 ------------------------------------------------------------
 -- PROBLEM #22
@@ -76,7 +89,7 @@ prob25 = error "Implement me!"
 -- сумма делителей одного (без учёта самого числа) равна
 -- другому, и наоборот
 prob26 :: Integer -> Integer -> Bool
-prob26 = error "Implement me!"
+prob26 a b = sum (divisors a) == b && sum (divisors b) == a
 
 ------------------------------------------------------------
 -- PROBLEM #27
