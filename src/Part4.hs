@@ -24,7 +24,7 @@ import Control.Applicative
 -- Написать экземпляр класса Functor для Parser
 -- (удовлетворяющий законам)
 instance Functor Parser where
-  fmap f x = Parser (map (fmap f) . runParser x)
+  fmap f x = Parser $ map (fmap f) . runParser x
 
 ------------------------------------------------------------
 -- PROBLEM #34
@@ -32,12 +32,18 @@ instance Functor Parser where
 -- Написать экземпляр класса Applicative для Parser
 -- (удовлетворяющий законам)
 instance Applicative Parser where
+  pure value = Parser $ \str -> [(str, value)]
+
+  (<*>) f x = Parser $ \y -> runParser f y >>= \(log, g) -> map (fmap g) (runParser x log)
+
 ------------------------------------------------------------
 -- PROBLEM #35
 --
 -- Написать экземпляр класса Alternative для Parser
 -- (удовлетворяющий законам)
 instance Alternative Parser where
+  empty = Parser $ const []
+
 ------------------------------------------------------------
 -- PROBLEM #36
 --

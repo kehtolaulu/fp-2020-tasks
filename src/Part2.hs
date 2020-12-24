@@ -86,6 +86,7 @@ prob12 (Tree leftTree value rightTree)
       , fmap prob12 rightTree
       ]
   where
+    allCorrect [] = True
     allCorrect (Nothing:xs) = allCorrect xs
     allCorrect ((Just b):xs) = b && allCorrect xs
 

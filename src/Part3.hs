@@ -102,7 +102,8 @@ prob26 a b = sum (divisors a) == b && sum (divisors b) == a
 -- Найти в списке два числа, сумма которых равна заданному.
 -- Длина списка не превосходит 500
 prob27 :: Int -> [Int] -> Maybe (Int, Int)
-prob27 = error "Implement me!"
+prob27 _ [] = Nothing
+prob27 s (x:xs) = if s - x `elem` xs then Just (x, s - x) else prob27 s xs
 
 ------------------------------------------------------------
 -- PROBLEM #28
