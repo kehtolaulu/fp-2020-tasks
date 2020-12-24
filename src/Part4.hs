@@ -14,12 +14,18 @@ import Part4.Types
 
 import Control.Applicative
 
+
+-- newtype Parser a = Parser
+--   { runParser :: String -> [(String, a)] }
+
 ------------------------------------------------------------
 -- PROBLEM #33
 --
 -- Написать экземпляр класса Functor для Parser
 -- (удовлетворяющий законам)
 instance Functor Parser where
+  fmap f x = Parser (map (fmap f) . runParser x)
+
 ------------------------------------------------------------
 -- PROBLEM #34
 --
