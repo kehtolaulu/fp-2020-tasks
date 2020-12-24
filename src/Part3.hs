@@ -1,6 +1,6 @@
 module Part3 where
 
-import Data.List (group, nub, sort, find)
+import Data.List (find, group, nub, sort)
 
 ------------------------------------------------------------
 -- PROBLEM #18
@@ -10,7 +10,7 @@ prob18 :: Integer -> Bool
 prob18 = isPrime
 
 isPrime :: Integer -> Bool
-isPrime n = n > 1 && null [x | x <- [2..n - 1], n `mod` x == 0]
+isPrime n = n > 1 && null [x | x <- [2 .. n - 1], n `mod` x == 0]
 
 ------------------------------------------------------------
 -- PROBLEM #19
@@ -40,11 +40,11 @@ prob21 :: Integer -> [Integer]
 prob21 1 = [1]
 prob21 n = (sort . divisors) n ++ [n]
 
-divisors :: Integer  -> [Integer ]
+divisors :: Integer -> [Integer]
 divisors 1 = [1]
-divisors n = (1:) $ nub $ concat [ [x, n `div` x] | x <- [2..limit], n `rem` x == 0 ]
+divisors n = (1 :) $ nub $ concat [[x, n `div` x] | x <- [2 .. limit], n `rem` x == 0]
   where
-    limit = (floor.sqrt.fromIntegral) n
+    limit = (floor . sqrt . fromIntegral) n
 
 ------------------------------------------------------------
 -- PROBLEM #22
@@ -52,7 +52,8 @@ divisors n = (1:) $ nub $ concat [ [x, n `div` x] | x <- [2..limit], n `rem` x =
 -- Подсчитать произведение количеств букв i в словах из
 -- заданной строки (списка символов)
 prob22 :: String -> Integer
-prob22 = error "Implement me!"
+prob22 "" = 0
+prob22 text = product (map (fromIntegral . length . filter (== 'i')) (words text))
 
 ------------------------------------------------------------
 -- PROBLEM #23
@@ -72,7 +73,9 @@ prob23 = error "Implement me!"
 -- представить как сумму чисел от 1 до какого-то K
 -- (1 <= N <= 10^10)
 prob24 :: Integer -> Bool
-prob24 = error "Implement me!"
+prob24 num = perfectSquare (1 + 8 * num)
+  where
+    perfectSquare x = x == floor (sqrt (fromInteger x)) ^ 2
 
 ------------------------------------------------------------
 -- PROBLEM #25
@@ -80,7 +83,9 @@ prob24 = error "Implement me!"
 -- Проверить, что запись числа является палиндромом (т.е.
 -- читается одинаково слева направо и справа налево)
 prob25 :: Integer -> Bool
-prob25 = error "Implement me!"
+prob25 = isPalindrome . show
+  where
+    isPalindrome xs = xs == reverse xs
 
 ------------------------------------------------------------
 -- PROBLEM #26
