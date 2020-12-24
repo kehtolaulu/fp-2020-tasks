@@ -1,10 +1,4 @@
-module Part1
-  ( prob1
-  , prob2
-  , prob3
-  , prob4
-  , prob5
-  ) where
+module Part1 where
 
 ------------------------------------------------------------
 -- PROBLEM #1
@@ -88,8 +82,18 @@ fib n
 -- Числа n и k положительны и не превосходят 10^8.
 -- Число 1 не считается простым числом
 prob5 :: Integer -> Integer -> Bool
-prob5 n k = all (< k) (primeDivisors n)
+prob5 n k = gpd < k && gpd /= 1
   where
-    factors n = [x | x <- [1..n], mod n x == 0]
-    primeDivisors x = filter prime (factors x)
-    prime x = factors x == [1, x]
+    gpd = greatestPrimeDivisor n
+
+greatestPrimeDivisor :: Integer -> Integer
+greatestPrimeDivisor num = iter (num - 1) num
+
+iter :: Integer -> Integer -> Integer
+iter i num = if i == 1 || mod num i == 0 && prime i then i else iter (i - 1) num
+
+factors :: Integral a => a -> [a]
+factors n = [x | x <- [1..n], mod n x == 0]
+
+prime :: Integral a => a -> Bool
+prime x = factors x == [1, x]
