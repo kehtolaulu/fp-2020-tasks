@@ -103,7 +103,10 @@ instance Foldable Tree where
 -- поддерево, в корне которого находится значение, если оно
 -- есть в дереве поиска; если его нет - вернуть Nothing
 prob13 :: Ord a => a -> Tree a -> Maybe (Tree a)
-prob13 = error "Implement me!"
+prob13 v t@(Tree lt x rt)
+  | v == x = Just t
+  | v < x = case lt of { (Just tree) -> prob13 v tree; Nothing -> Nothing }
+  | v > x = case rt of { (Just tree) -> prob13 v tree; Nothing -> Nothing }
 
 ------------------------------------------------------------
 -- PROBLEM #14
