@@ -128,7 +128,10 @@ prob29 k = error "Implement me!"
 -- Найти наименьшее треугольное число, у которого не меньше
 -- заданного количества делителей
 prob30 :: Int -> Integer
-prob30 = error "Implement me!"
+prob30 k = head (filter (\t -> divisorsCount t >= k) ts)
+  where
+    divisorsCount x = length $ filter (\d -> mod x d == 0) [1..x]
+    ts = map (\n -> n * (n + 1) `div` 2) [0..]
 
 ------------------------------------------------------------
 -- PROBLEM #31
